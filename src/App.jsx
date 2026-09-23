@@ -15,9 +15,47 @@ function App() {
     specifics: '' // specific food or activities chosen
   })
 
+  // helper to update response data
+  const updateResponse = (key, value) => {
+    setResponses(prev => ({ 
+      ...prev,                // keep all the other answers safe
+      [key]: value }))        // update the specific answer
+  }
+
   // state for moving no button
   const [noBtnPos, setNoBtnPos] = useState({top: 'auto', left:'auto', position: 'static'})
   
+  // make the No button move when hovered
+  function moveButton(e) {
+    const rect = e.target.getBoundingClientRect();
+    
+    // find the exact center pixel of the button
+    const buttonCenterX = rect.left + rect.width / 2;
+    const buttonCenterY = rect.top + rect.height / 2;
+
+    // calculate how far away the mouse cursor is from the center
+    const distanceX = e.clientX - buttonCenterX;
+    const distanceY = e.clientY - buttonCenterY;
+ 
+    // pushes it further away in the opposite direction
+    const pushFactor = -1; 
+
+    // calculate new coordinates based on current layout
+    let newLeft = rect.left + (distanceX * pushFactor);
+    let newTop = rect.top + (distanceY * pushFactor);
+
+    // bounds checking so it doesn't leave the screen border
+    setNoBtnPos({
+      position: 'fixed', // fixed helps track direct window coordinates from e.clientX
+      left: `${newLeft}px`,
+      top: `${newTop}px`,
+      transition: 'all 0.1s ease-out' // smooth, organic glide!
+    });
+}
+
+  // TODO: send an email on final submit
+
+
   return (
     <div className="app-container">
 
@@ -26,7 +64,10 @@ function App() {
         <main className="main">
           <h1> WILL U GO ON A DATE WITH ME?</h1>
           <button className = "YES" onClick={() => setCurrentPage('when')}>YES</button>
-          <button className = "NO" onClick={() => Move()}>NO</button>
+          <button 
+            className = "NO" 
+            style={noBtnPos} 
+            onMouseMove={(e) => moveButton(e)}>NO</button>
         </main>
       )}
       
@@ -35,6 +76,16 @@ function App() {
         <main className="when">
           <h1> Yay! When are you free?</h1>
           {/* calendar & time*/}
+          <input
+            type = "date"
+            onChange={(e) => updateResponse('date', e.target.value)}
+          />
+          <select onChange={(e) => updateResponse('time', e.target.value)}>
+            <option value="">Select a time</option>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
           <button className = "Next" onClick={() => setCurrentPage('what')}>Next</button>
         </main>
       )}
