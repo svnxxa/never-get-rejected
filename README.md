@@ -1,5 +1,6 @@
 # Never Get Rejected
 
-## TODO:
+## TODOs:
+* store responses
 * separate functions
 * aesthetics
