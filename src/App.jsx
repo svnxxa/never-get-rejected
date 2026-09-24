@@ -12,7 +12,7 @@ function App() {
     date: '',
     time: '',
     preference: '', // food, activity. both, or custom text
-    specifics: '' // specific food or activities chosen
+    specifics: [] // specific food or activities chosen
   })
 
   // helper to update response data
@@ -62,7 +62,7 @@ function App() {
       {/* Page 1: home*/}
       {currentPage === 'home' && (
         <main className="main">
-          <h1> WILL U GO ON A DATE WITH ME?</h1>
+          <h1> WILL U GO ON A DATE WITH ME?🥺</h1>
           <button className = "YES" onClick={() => setCurrentPage('when')}>YES</button>
           <button 
             className = "NO" 
@@ -78,8 +78,11 @@ function App() {
           {/* calendar & time*/}
           <input
             type = "date"
+            // restricts selection to today and futre dates
+            min={new Date().toISOString().split('T'[0])}
             onChange={(e) => updateResponse('date', e.target.value)}
           />
+
           <select onChange={(e) => updateResponse('time', e.target.value)}>
             <option value="">Select a time</option>
             <option value="morning">Morning</option>
@@ -87,9 +90,14 @@ function App() {
             <option value="evening">Evening</option>
           </select>
 
-          {/* MAKE SURE TO VALIDATE THAT THEY PICKED A DATE AND TIME BEFORE LETTING THEM GO TO THE NEXT PAGE */}
-          {/* MAKE SURE THEY CAN'T CHOOSE PAST DATES */}
-          <button className = "Next" onClick={() => setCurrentPage('what')}>Next</button>
+          {/*validation check*/}
+          <button className = "Next" onClick={() => {
+            if (!responses.date || !responses.time) {
+              alert("Please select both a date and a time before continuing!");
+              return; // halts the fn execution so they can't skip ahead
+            }
+            setCurrentPage('what');
+            }}>Next</button>
         </main>
       )}
 
@@ -98,18 +106,21 @@ function App() {
         <main className="what">
           <h1>What do you feel like?</h1>
           <button className = 'back' onClick={() => setCurrentPage('when')}>&lt;&lt; Back</button>
-          <button className = 'food' onClick={() => {
-            updateResponse('preference', 'food');
-            setCurrentPage('food-option');
-          }}>Food🍽️</button>
-          <button className = 'activity' onClick={()=> {
-            saveRespnse('preference', 'activity');
-            setCurrentPage('activity-option')
-          }}>Activity🕺</button>
-          <button className = 'both' onClick={() => {
-            updateResponse('preference', 'food & activity');
-            setCurrentPage('both');
-          }}>🍽️Both🕺</button>
+          <div className='preferences'>
+            <button onClick={()=>{
+              updateResponse('preference', 'food');
+              setCurrentPage('food-option');
+            }}>Food🍽️</button>
+            <button onClick={()=> {
+              updateResponse('preference', 'activity');
+              setCurrentPage('activity-option');
+            }}>Activity🕺</button>
+            <button onClick={() => {
+              updateResponse('preference', 'food & activity');
+              setCurrentPage('both');
+            }}>🍽️Both🕺</button>
+          </div>
+          
           <form id = "others" onSubmit={(e) => {
             e.preventDefault(); // prevent page refresh
             setCurrentPage('thx');
@@ -133,12 +144,12 @@ function App() {
           <button className = 'back' onClick={() => setCurrentPage('what')}>&lt;&lt; Back</button>
           {/* food options + others + back*/}
           <div className='food-options'>
-            {/* MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK */}
-            {/* OR THEY CAN CHOOSE MULTIPLE */}
+            {/* TODO: MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK and allow multiple choices and see what they chose*/}
+            {/* TODO: OR THEY CAN CHOOSE MULTIPLE */}
             <button onClick={() => updateResponse('specifics', 'sushi')}>Sushi🍣</button>
             <button onClick={() => updateResponse('specifics', 'pasta')}>Pasta🍝</button>
             <button onClick={() => updateResponse('specifics', 'tacos')}>Tacos🌮</button>
-            <button onClick={() => updateResponse('specifics', 'dessert')}>Dessert🍦</button>
+            <button onClick={() => updateResponse('specifics', 'dessert')}>Ice Cream🍦</button>
             <button onClick={() => updateResponse('specifics', 'tea/coffee')}>Tea/Coffee🍵</button>
             <button onClick={() => updateResponse('specifics', 'drinks')}>Drinks🍸</button>
           </div>
@@ -157,7 +168,7 @@ function App() {
             <button type="submit">Submit</button>
           </form>
 
-          {/* MAKE SURE TO UPDATE THE RESPONSES STATE WHEN THEY PICK A FOOD OPTION
+          {/* TODO: MAKE SURE TO UPDATE THE RESPONSES STATE WHEN THEY PICK A FOOD OPTION
           MAKE SURE TO VALIDATE THAT THEY PICKED A FOOD OPTION BEFORE LETTING THEM GO TO THE NEXT PAGE */}
           <button className='thx' onClick={() => setCurrentPage('thx')}>Next &gt;&gt;</button>
         </main>
@@ -165,18 +176,18 @@ function App() {
 
       {/* page 5: activity optins */}
       {currentPage === 'activity-option' && (
-        <main className='activity-opton'>
+        <main className='activity-option'>
           <h1>What do you want to do?</h1>
           <button className = 'back' onClick={() => setCurrentPage('what')}>&lt;&lt; Back</button>
           {/* activity options + others + back*/}
           <div className='activity-options'>
-            {/* MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK */}
-            {/* OR THEY CAN CHOOSE MULTIPLE */}
-            <button onClick={() => updateResponse('specifics', 'momvie')}>Movie</button>
-            <button onClick={() => updateResponse('specifics', 'bouldering')}>Bouldering</button>
-            <button onClick={() => updateResponse('specifics', 'hike')}>Hikes</button>
-            <button onClick={() => updateResponse('specifics', 'dessert')}>Dessert🍦</button>
-            <button onClick={() => updateResponse('specifics', 'drinks')}>Drinks🍸</button>
+            {/* TODO: MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK */}
+            {/* TODO: OR THEY CAN CHOOSE MULTIPLE */}
+            <button onClick={() => updateResponse('specifics', 'momvie')}>Movie🎬</button>
+            <button onClick={() => updateResponse('specifics', 'arcade')}>Arcade🎮</button>
+            <button onClick={() => updateResponse('specifics', 'bouldering')}>Bouldering🧗</button>
+            <button onClick={() => updateResponse('specifics', 'hiking')}>Hiking🚶</button>
+            <button onClick={() => updateResponse('specifics', 'bowling')}>Bowling🎳</button>
           </div>
           
           <form id = "others" onSubmit={(e) => {
@@ -194,8 +205,8 @@ function App() {
           </form>
 
 
-          {/* MAKE SURE TO UPDATE THE RESPONSES STATE WHEN THEY PICK AN ACTIVITY OPTION */}
-          {/* MAKE SURE TO VALIDATE THAT THEY PICKED AN ACTIVITY OPTION BEFORE LETTING THEM GO TO THE NEXT PAGE */}
+          {/* TODO: MAKE SURE TO UPDATE THE RESPONSES STATE WHEN THEY PICK AN ACTIVITY OPTION */}
+          {/* TODO: MAKE SURE TO VALIDATE THAT THEY PICKED AN ACTIVITY OPTION BEFORE LETTING THEM GO TO THE NEXT PAGE */}
           <button className='thx' onClick={() => setCurrentPage('thx')}>Next &gt;&gt;</button>
         </main>
       )}
@@ -203,11 +214,47 @@ function App() {
       {/* page 6: both */}
       {currentPage === 'both' && (
         <main className='both'>
+          <h1>What do you want to eat & do?</h1>
           <button className = 'back' onClick={() => setCurrentPage('what')}>&lt;&lt; Back</button>
           {/* basically both */}
+          <div className='food-options'>
+            {/* TODO: MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK and allow multiple choices and see what they chose*/}
+            {/* TODO: OR THEY CAN CHOOSE MULTIPLE */}
+            <button onClick={() => updateResponse('specifics', 'sushi')}>Sushi🍣</button>
+            <button onClick={() => updateResponse('specifics', 'pasta')}>Pasta🍝</button>
+            <button onClick={() => updateResponse('specifics', 'tacos')}>Tacos🌮</button>
+            <button onClick={() => updateResponse('specifics', 'dessert')}>Ice Cream🍦</button>
+            <button onClick={() => updateResponse('specifics', 'tea/coffee')}>Tea/Coffee🍵</button>
+            <button onClick={() => updateResponse('specifics', 'drinks')}>Drinks🍸</button>
+          </div>
 
-          {/* MAKE SURE TO UPDATE THE RESPONSES STATE WHEN THEY PICK BOTH OPTIONS */}
-          {/* MAKE SURE TO VALIDATE THAT THEY PICKED BOTH OPTIONS BEFORE LETTING THEM GO TO THE NEXT PAGE */}
+
+          <div className='activity-options'>
+            {/* TODO: MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK */}
+            {/* TODO: OR THEY CAN CHOOSE MULTIPLE */}
+            <button onClick={() => updateResponse('specifics', 'momvie')}>Movie🎬</button>
+            <button onClick={() => updateResponse('specifics', 'arcade')}>Arcade🎮</button>
+            <button onClick={() => updateResponse('specifics', 'bouldering')}>Bouldering🧗</button>
+            <button onClick={() => updateResponse('specifics', 'hiking')}>Hiking🚶</button>
+            <button onClick={() => updateResponse('specifics', 'bowling')}>Bowling🎳</button>
+          </div>
+          
+          <form id = "others" onSubmit={(e) => {
+            e.preventDefault(); // prevent page refresh
+            // setCurrentPage('thx');
+          }}>
+            <input 
+              type="text" 
+              id="input" 
+              placeholder='Others...' 
+              required 
+              onChange={(e) => updateResponse('specifics', e.target.value)} // saves typing text
+            />
+            <button type="submit">Submit</button>
+          </form>
+          
+          {/* TODO: MAKE SURE TO UPDATE THE RESPONSES STATE WHEN THEY PICK BOTH OPTIONS */}
+          {/* TODO: MAKE SURE TO VALIDATE THAT THEY PICKED BOTH OPTIONS BEFORE LETTING THEM GO TO THE NEXT PAGE */}
           <button className='Thx' onClick={() => setCurrentPage('thx')}>Next &gt;&gt;</button>
         </main>
       )}
