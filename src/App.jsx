@@ -22,6 +22,23 @@ function App() {
       [key]: value }))        // update the specific answer
   }
 
+  const toggleSpecifics = (item) => {
+    setResponses(prev => {
+      // check if the item is alr selected
+      const exists = prev.specifics.includes(item);
+
+      // if it exists, filter it out. if it doesn't, add it to the array
+      const newSpecifics = exists
+        ? prev.specifics.filter(choice => choice !== item)
+        : [...prev.specifics, item];
+
+        return {
+          ...prev,
+          specifics: newSpecifics
+        };
+    });
+  };
+
   // state for moving no button
   const [noBtnPos, setNoBtnPos] = useState({top: 'auto', left:'auto', position: 'static'})
   
@@ -51,7 +68,11 @@ function App() {
       top: `${newTop}px`,
       transition: 'all 0.1s ease-out' // smooth, organic glide!
     });
-}
+  }
+
+  const FOOD_CHOICES = ['Sushi🍣', 'Pasta🍝', 'Tacos🌮', 'Ice Cream🍦', 'Tea/Coffee🍵', 'Drinks🍸']
+  const ACTIVITY_CHOICES = ['Movie🎬', 'Arcade🎮', 'Sunset Watching🌇', 'Bouldering🧗', 'Hiking🚶', 'Bowling🎳']
+
 
   // TODO: send an email on final submit
 
@@ -79,7 +100,7 @@ function App() {
           <input
             type = "date"
             // restricts selection to today and futre dates
-            min={new Date().toISOString().split('T'[0])}
+            min={new Date().toISOString().split('T')[0]}
             onChange={(e) => updateResponse('date', e.target.value)}
           />
 
@@ -142,16 +163,22 @@ function App() {
         <main className='food-option'>
           <h1>What do you want to eat?</h1>
           <button className = 'back' onClick={() => setCurrentPage('what')}>&lt;&lt; Back</button>
+          
           {/* food options + others + back*/}
+
+          {/* TODO: MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK and allow multiple choices and see what they chose*/}
+          {/* TODO: OR THEY CAN CHOOSE MULTIPLE */}
+          
           <div className='food-options'>
-            {/* TODO: MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK and allow multiple choices and see what they chose*/}
-            {/* TODO: OR THEY CAN CHOOSE MULTIPLE */}
-            <button onClick={() => updateResponse('specifics', 'sushi')}>Sushi🍣</button>
-            <button onClick={() => updateResponse('specifics', 'pasta')}>Pasta🍝</button>
-            <button onClick={() => updateResponse('specifics', 'tacos')}>Tacos🌮</button>
-            <button onClick={() => updateResponse('specifics', 'dessert')}>Ice Cream🍦</button>
-            <button onClick={() => updateResponse('specifics', 'tea/coffee')}>Tea/Coffee🍵</button>
-            <button onClick={() => updateResponse('specifics', 'drinks')}>Drinks🍸</button>
+            {FOOD_CHOICES.map(food => (
+              <button 
+                key={food}
+                className={responses.specifics.includes(food) ? 'selected' : ''}
+                onClick={() => toggleSpecifics(food)}
+                >
+                  {food}
+              </button>
+            ))}
           </div>
           
           <form id = "others" onSubmit={(e) => {
@@ -174,6 +201,8 @@ function App() {
         </main>
       )}
 
+      {/* TODO: BUTTONS ARE NOT RESETTING */}
+
       {/* page 5: activity optins */}
       {currentPage === 'activity-option' && (
         <main className='activity-option'>
@@ -181,13 +210,15 @@ function App() {
           <button className = 'back' onClick={() => setCurrentPage('what')}>&lt;&lt; Back</button>
           {/* activity options + others + back*/}
           <div className='activity-options'>
-            {/* TODO: MAKE SURE IT SAVES THE LAST OPTION THEY CHOOSE NOT EVERY SINGLE THING THEY CLICK */}
-            {/* TODO: OR THEY CAN CHOOSE MULTIPLE */}
-            <button onClick={() => updateResponse('specifics', 'momvie')}>Movie🎬</button>
-            <button onClick={() => updateResponse('specifics', 'arcade')}>Arcade🎮</button>
-            <button onClick={() => updateResponse('specifics', 'bouldering')}>Bouldering🧗</button>
-            <button onClick={() => updateResponse('specifics', 'hiking')}>Hiking🚶</button>
-            <button onClick={() => updateResponse('specifics', 'bowling')}>Bowling🎳</button>
+            {FOOD_CHOICES.map(activity => (
+              <button 
+                key={activity}
+                className={responses.specifics.includes(activity) ? 'selected' : ''}
+                onClick={() => toggleSpecifics(activity)}
+                >
+                  {activity}
+              </button>
+            ))}
           </div>
           
           <form id = "others" onSubmit={(e) => {
@@ -262,8 +293,8 @@ function App() {
       {/* page 7: thx */}
       {currentPage === 'thx' && (
         <h1>Thank you for saying yes! Lemme text you hehe</h1>
-      )} 
-      
+      )}  
+      {/* ==> summary */}
 
     </div>
   )

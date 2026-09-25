@@ -1,1 +1,26 @@
-/* If you notice any jittering because the button moves while updating, adding transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); into your App.css under the .NO class makes the slide look incredibly slick and realistic. */
+/* NO btn */
+.NO {
+  /* keeps the btn on top of everything while it glides */
+  z-index: 10; 
+  
+  /* smooth sliding effect */
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* add base styling here (like cursor, colors, etc) */
+  cursor: default;
+}
+
+/* visual selections */
+.food-options button.selected,
+.activity-options button.selected{
+  background-color: #ff4a73; 
+  color: white;             
+  border: 2px solid #ff1a4a;
+  transform: scale(1.05);    /* pops the item out slightly larger on the screen */
+  box-shadow: 0 4px 12px rgba(255, 74, 115, 0.4); 
+}
+
+ .food-options button,
+ .activity-options button{
+  transition: all 0.1s ease-in-out;
+}
