@@ -1,3 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    border-color: transparent !important;
+}
+
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ffeef2 0%, #f3e7ff 100%);
+}
+
+main, .main, .when, .what, .food-option, .activity-option, .both {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none; /* Deletes any accidental gray drop-shadows */
+}
+
+
+
+
 @font-face {
   font-family: 'Varela Round';
   src: url('fonts/VarelaRound-Regular.woff2') format('woff2');
@@ -5,33 +33,38 @@
   font-style: italic;
 }
 
+
 h1, h2, h3, body, button{
     font-family: 'Varela Round', sans-serif;
 }
 
 h1 {
     font-size: 45px;
+    margin-bottom: 24px;
+    text-align: center;
 }
 
 p {
     color: black;
 }
 
-
 .app-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffeef2 0%, #f3e7ff 100%);
+  width: 100%;
+  /* background: linear-gradient(135deg, #ffeef2 0%, #f3e7ff 100%); */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  padding: 20px;
 }
 
 button {
-    border-radius: 999px;
-    background-color: #ffff;
+    border-radius: 999px !important;
+    background-color: #ffffff;
     color: black;
-    border: 2px solid pink;
+    border: 2px solid pink !important;
     padding: 10px 20px;
     margin: 10px 4px;
     font-size: 18px;
@@ -41,7 +74,7 @@ button:hover:not(.NO) {
     transform: scale(1.02);
     background-color: #ff4a73;
     color: white;
-    border-color: #ff1a4a;
+    border-color: #ff1a4a !important;
     box-shadow: 0 6px 20px rgba(255, 74, 115, 0.3);
 
 }
@@ -64,7 +97,7 @@ button:hover:not(.NO) {
 .activity-options button.selected{
   background-color: #ff4a73; 
   color: white;             
-  border: 2px solid #ff1a4a;
+  border: 2px solid #ff1a4a !important; 
   transform: scale(1.03);    /* pops the item out slightly larger on the screen */
   box-shadow: 0 6px 20px rgba(255, 74, 115, 0.3); 
 }
@@ -75,20 +108,20 @@ button:hover:not(.NO) {
 } */
 
 input, select {
-    border-radius: 999px;
-    font-size: 1.30 rem;
-    padding: 15px;
+    border-radius: 999px !important;
+    font-size: 1.05rem;
+    padding: 12px;
     margin: 20px 8px;
-    border: 2px solid pink;
+    border: 2px solid pink !important;
 }
 
 
 .summary-card {
-    padding: 37px;
-    border: 2px dashed #ff4a73;
-    border-radius: 12px;
+    padding: 40px 50px;
+    border: 2px dashed #ff4a73 !important;
+    border-radius: 12px !important;
     margin: 20px auto;
-    max-width: 300px;
+    max-width: 700px;
     background-color: #fff5f7;
     text-align: left;
     font-size: 19px;
