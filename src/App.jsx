@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import './App.css'
 
 function App() {
@@ -6,6 +6,9 @@ function App() {
   // 'home' is the intial value of this state (default to the 'home' page when it first loads)
   // const [state, setter fn] = initialization
   const [currentPage, setCurrentPage] = useState('home')
+
+  // temporary local state for the input text
+  const [customInput, setCustomInput] = useState('')
 
   // state to store responses
   const [responses, setResponses] = useState({
@@ -72,7 +75,6 @@ function App() {
 
   const FOOD_CHOICES = ['Sushi🍣', 'Pasta🍝', 'Tacos🌮', 'Ice Cream🍦', 'Tea/Coffee🍵', 'Drinks🍸']
   const ACTIVITY_CHOICES = ['Movie🎬', 'Arcade🎮', 'Sunset Watching🌇', 'Bouldering🧗', 'Hiking🚶', 'Bowling🎳']
-
 
   // TODO: send an email on final submit
 
@@ -144,20 +146,6 @@ function App() {
               setCurrentPage('both');
             }}>🍽️Both🕺</button>
           </div>
-          
-          <form id = "others" onSubmit={(e) => {
-            e.preventDefault(); // prevent page refresh
-            setCurrentPage('thx');
-          }}>
-            <input 
-              type="text" 
-              id="input" 
-              placeholder='Others...' 
-              required 
-              onChange={(e) => updateResponse('preference', e.target.value)} // saves typing text
-            />
-            <button type="submit">Submit</button>
-          </form>
         </main>
       )}
 
@@ -180,31 +168,36 @@ function App() {
             ))}
           </div>
           
-          <form id = "others" onSubmit={(e) => {
-            e.preventDefault(); // prevent page refresh
-            // setCurrentPage('thx');
+          <form id="others" onSubmit={(e) => {
+            e.preventDefault();
+
+            if (customInput.trim()) {
+              toggleSpecifics(customInput.trim());
+              setCustomInput('');
+            }
           }}>
-            <input 
-              type="text" 
-              id="input" 
-              placeholder='Others...' 
-              required 
-              onChange={(e) => updateResponse('specifics', e.target.value)} // saves typing text
+            <input
+              type="text"
+              id="input"
+              placeholder='Others...'
+              value={customInput} // keeps the input box synced
+              required
+              onChange={(e) => setCustomInput(e.target.value)}
             />
-            <button type="submit">Submit</button>
+            <button type="submit">Add Choice</button>
           </form>
 
+          {/* Next button with double validation */}
           <button className='thx' onClick={() => {
             // check if they picked at least one food
-            const hasFood = responses.specifics.some(item => FOOD_CHOICES.includes(item));
-
-            if (!hasFood) {
-              alert("Please pick at least one food option!🍽️");
+            if (responses.specifics.length == 0) {
+              alert("Please pick an option or add your own choice!🍽️");
               return;
             }
 
             setCurrentPage('summary'); 
           }}>Next &gt;&gt;</button>
+
         </main>
       )}
 
@@ -226,28 +219,30 @@ function App() {
             ))}
           </div>
           
-          <form id = "others" onSubmit={(e) => {
-            e.preventDefault(); // prevent page refresh
-            // setCurrentPage('thx');
-          }}>
-            <input 
-              type="text" 
-              id="input" 
-              placeholder='Others...' 
-              required 
-              onChange={(e) => updateResponse('specifics', e.target.value)} // saves typing text
-            />
-            <button type="submit">Submit</button>
-          </form>
+          <form id="others" onSubmit={(e) => {
+            e.preventDefault();
 
+            if (customInput.trim()) {
+              toggleSpecifics(customInput.trim());
+              setCustomInput('');
+            }
+          }}>
+            <input
+              type="text"
+              id="input"
+              placeholder='Others...'
+              value={customInput} // keeps the input box synced
+              required
+              onChange={(e) => setCustomInput(e.target.value)}
+            />
+            <button type="submit">Add Choice</button>
+          </form>
 
           {/* Next button with double validation */}
           <button className='thx' onClick={() => {
-            // check if they picked at least one activity
-            const hasActivity = responses.specifics.some(item => ACTIVITY_CHOICES.includes(item));
-
-            if (!hasActivity) {
-              alert("Please pick at least one activity option!🕺");
+            // check if they picked at least one food
+            if (responses.specifics.length == 0) {
+              alert("Please pick an option or add your own choice!🕺");
               return;
             }
 
@@ -288,30 +283,31 @@ function App() {
             ))}
           </div>
           
-          <form id = "others" onSubmit={(e) => {
-            e.preventDefault(); // prevent page refresh
-            // setCurrentPage('thx');
+          <form id="others" onSubmit={(e) => {
+            e.preventDefault();
+
+            if (customInput.trim()) {
+              toggleSpecifics(customInput.trim());
+              setCustomInput('');
+            }
           }}>
-            <input 
-              type="text" 
-              id="input" 
-              placeholder='Others...' 
-              required 
-              onChange={(e) => updateResponse('specifics', e.target.value)} // saves typing text
+            <input
+              type="text"
+              id="input"
+              placeholder='Others...'
+              value={customInput} // keeps the input box synced
+              required
+              onChange={(e) => setCustomInput(e.target.value)}
             />
-            <button type="submit">Submit</button>
+            <button type="submit">Add Choice</button>
           </form>
-          
+
           {/* Next button with double validation */}
           <button className='thx' onClick={() => {
             // check if they picked at least one food
-            const hasFood = responses.specifics.some(item => FOOD_CHOICES.includes(item));
-            // check if they picked at least one activity
-            const hasActivity = responses.specifics.some(item => ACTIVITY_CHOICES.includes(item));
-
-            if (!hasFood || !hasActivity) {
-              alert("Please pick at least one food AND one activity option! 🍽️🕺");
-              return; 
+            if (responses.specifics.length < 2 ) {
+              alert("Please pick both options or add your own choices!🍽️🕺");
+              return;
             }
 
             setCurrentPage('summary'); 
@@ -328,5 +324,9 @@ function App() {
     </div>
   )
 }
+
+
+// TODO: OTHERS BUTTON NOT WORKING!!!!!!!!!!!!!
+
 
 export default App
