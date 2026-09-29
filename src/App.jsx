@@ -76,9 +76,6 @@ function App() {
   const FOOD_CHOICES = ['Sushi🍣', 'Pasta🍝', 'Tacos🌮', 'Ice Cream🍦', 'Tea/Coffee🍵', 'Drinks🍸']
   const ACTIVITY_CHOICES = ['Movie🎬', 'Arcade🎮', 'Sunset Watching🌇', 'Bouldering🧗', 'Hiking🚶', 'Bowling🎳']
 
-  // TODO: send an email on final submit
-
-
   return (
     <div className="app-container">
 
@@ -315,18 +312,50 @@ function App() {
         </main>
       )}
 
-      {/* page 7: thx */}
+      {/* page 7: summary */}
       {currentPage === 'summary' && (
-        <h1>Thank you for saying yes! Lemme text you hehe</h1>
-      )}  
-      {/* ==> summary */}
+        <main className="summary">
+          <h1>Confirm Our Date Plans! 💖</h1>
+          
+          <div className="summary-card" style={{ padding: '20px', border: '2px dashed #ff4a73', borderRadius: '12px', margin: '20px auto', maxWidth: '300px', backgroundColor: '#fff5f7', textAlign: 'left' }}>
+            <p>📅 **Date:** {responses.date}</p>
+            <p>⏰ **Time:** {responses.time}</p>
+            <p>✨ **Preference:** {responses.preference}</p>
+            <p>🎉 **Your Choices:** {responses.specifics.join(', ')}</p>
+          </div>
+
+          <button className="back" onClick={() => {
+            // back tracking for the summary screen
+            if (responses.preference === 'food') {
+              setCurrentPage('food-option');
+            } else {
+              setCurrentPage('activity-option');
+            }
+          }}>&lt;&lt; Change Plans</button>
+
+          <button className="confirm" onClick={() => {
+            // logs the choices to the console at submission
+            console.log("Final Submitted Responses:", responses); 
+            
+            // TODO: send an email OR store it somewhere
+
+            // thank you screen
+            setCurrentPage('thx');
+          }}>Looks Perfect! 🥰</button>
+        </main>
+      )}
+
+      {/* page 8: thanks */}
+      {currentPage === 'thx' && (
+        <main className='thx'>
+          <h1>thanks for saying yes!! lemme text u</h1>
+
+        </main>
+      )}
 
     </div>
   )
 }
-
-
-// TODO: OTHERS BUTTON NOT WORKING!!!!!!!!!!!!!
 
 
 export default App
