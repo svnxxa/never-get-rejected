@@ -1,3 +1,51 @@
+@font-face {
+  font-family: 'Varela Round';
+  src: url('fonts/VarelaRound-Regular.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+}
+
+h1, h2, h3, body, button{
+    font-family: 'Varela Round', sans-serif;
+}
+
+h1 {
+    font-size: 45px;
+}
+
+p {
+    color: black;
+}
+
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffeef2 0%, #f3e7ff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+    border-radius: 999px;
+    background-color: #ffff;
+    color: black;
+    border: 2px solid pink;
+    padding: 10px 20px;
+    margin: 10px 4px;
+    font-size: 18px;
+}
+
+button:hover:not(.NO) {
+    transform: scale(1.02);
+    background-color: #ff4a73;
+    color: white;
+    border-color: #ff1a4a;
+    box-shadow: 0 6px 20px rgba(255, 74, 115, 0.3);
+
+}
+
 /* NO btn */
 .NO {
   /* keeps the btn on top of everything while it glides */
@@ -10,17 +58,39 @@
   cursor: default;
 }
 
+
 /* visual selections */
 .food-options button.selected,
 .activity-options button.selected{
   background-color: #ff4a73; 
   color: white;             
   border: 2px solid #ff1a4a;
-  transform: scale(1.05);    /* pops the item out slightly larger on the screen */
-  box-shadow: 0 4px 12px rgba(255, 74, 115, 0.4); 
+  transform: scale(1.03);    /* pops the item out slightly larger on the screen */
+  box-shadow: 0 6px 20px rgba(255, 74, 115, 0.3); 
 }
 
- .food-options button,
+ /* .food-options button,
  .activity-options button{
   transition: all 0.1s ease-in-out;
+} */
+
+input, select {
+    border-radius: 999px;
+    font-size: 1.30 rem;
+    padding: 15px;
+    margin: 20px 8px;
+    border: 2px solid pink;
+}
+
+
+.summary-card {
+    padding: 37px;
+    border: 2px dashed #ff4a73;
+    border-radius: 12px;
+    margin: 20px auto;
+    max-width: 300px;
+    background-color: #fff5f7;
+    text-align: left;
+    font-size: 19px;
+    line-height: 1.5;
 }

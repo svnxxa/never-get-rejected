@@ -105,11 +105,13 @@ function App() {
 
           <select onChange={(e) => updateResponse('time', e.target.value)}>
             <option value="">Select a time</option>
-            <option value="morning">Morning</option>
-            <option value="afternoon">Afternoon</option>
-            <option value="evening">Evening</option>
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Evening">Evening</option>
           </select>
 
+          <p></p>
+          
           {/*validation check*/}
           <button className = "Next" onClick={() => {
             if (!responses.date || !responses.time) {
@@ -117,7 +119,7 @@ function App() {
               return; // halts the fn execution so they can't skip ahead
             }
             setCurrentPage('what');
-            }}>Next</button>
+            }}>Next &gt;&gt;</button>
         </main>
       )}
 
@@ -128,17 +130,17 @@ function App() {
           <button className = 'back' onClick={() => setCurrentPage('when')}>&lt;&lt; Back</button>
           <div className='preferences'>
             <button onClick={()=>{
-              updateResponse('preference', 'food');
+              updateResponse('preference', 'Food');
               updateResponse('specifics', []);
               setCurrentPage('food-option');
             }}>Food🍽️</button>
             <button onClick={()=> {
-              updateResponse('preference', 'activity');
+              updateResponse('preference', 'Activity');
               updateResponse('specifics', []);
               setCurrentPage('activity-option');
             }}>Activity🕺</button>
             <button onClick={() => {
-              updateResponse('preference', 'food & activity');
+              updateResponse('preference', 'Food & Activity');
               updateResponse('specifics', []);
               setCurrentPage('both');
             }}>🍽️Both🕺</button>
@@ -317,11 +319,11 @@ function App() {
         <main className="summary">
           <h1>Confirm Our Date Plans! 💖</h1>
           
-          <div className="summary-card" style={{ padding: '20px', border: '2px dashed #ff4a73', borderRadius: '12px', margin: '20px auto', maxWidth: '300px', backgroundColor: '#fff5f7', textAlign: 'left' }}>
-            <p>📅 **Date:** {responses.date}</p>
-            <p>⏰ **Time:** {responses.time}</p>
-            <p>✨ **Preference:** {responses.preference}</p>
-            <p>🎉 **Your Choices:** {responses.specifics.join(', ')}</p>
+          <div className="summary-card">
+            <p>📅 <strong>Date:</strong> {responses.date}</p>
+            <p>⏰ <strong>Time:</strong> {responses.time}</p>
+            <p>✨ <strong>Preference:</strong> {responses.preference}</p>
+            <p>🎉 <strong>Your Choices:</strong> {responses.specifics.join(', ')}</p>
           </div>
 
           <button className="back" onClick={() => {
@@ -333,7 +335,7 @@ function App() {
             }
           }}>&lt;&lt; Change Plans</button>
 
-          <button className="confirm" onClick={() => {
+          {/* <button className="confirm" onClick={() => {
             // logs the choices to the console at submission
             console.log("Final Submitted Responses:", responses); 
             
@@ -341,14 +343,52 @@ function App() {
 
             // thank you screen
             setCurrentPage('thx');
-          }}>Looks Perfect! 🥰</button>
+          }}>Looks Perfect! 🥰</button> */}
+
+          <button className="confirm" onClick={async () => {
+  if (responses.specifics.length === 0) {
+    alert("Please make sure you have picked your choices!");
+    return;
+  }
+
+  // format the array into a clean string text row
+  const formattedData = {
+    ...responses,
+    specifics: responses.specifics.join(', ')
+  };
+
+  try {
+    // send data from your computer straight to the Google Script
+    await fetch("https://script.google.com/macros/s/AKfycbwkzPR4iybohNSIf2Z4tHE10hE-SditI5w4Kc4jDtW2UAIRnz19-UsVKusWnX1mO2-W/exec", {
+      method: "POST",
+      mode: "no-cors", // bypasses local testing CORS restrictions
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formattedData)
+    });
+
+    // since 'no-cors' hides the response body status, we assume success if no error is caught
+    console.log("Data pushed to Google Sheets successfully!", responses);
+    setCurrentPage('thx');
+
+  } catch (error) {
+    console.error("Network error saving to Google Sheets:", error);
+    alert("Something went wrong saving your choices!");
+  }
+}}>
+  Looks Perfect! 🥰
+</button>
+
+
+
         </main>
       )}
 
       {/* page 8: thanks */}
       {currentPage === 'thx' && (
         <main className='thx'>
-          <h1>thanks for saying yes!! lemme text u</h1>
+          <h1>Thanks for saying yes!! Lemme text u</h1>
 
         </main>
       )}
