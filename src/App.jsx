@@ -100,10 +100,11 @@ function App() {
             type = "date"
             // restricts selection to today and futre dates
             min={new Date().toISOString().split('T')[0]}
+            value={responses.date}
             onChange={(e) => updateResponse('date', e.target.value)}
           />
 
-          <select onChange={(e) => updateResponse('time', e.target.value)}>
+          <select value={responses.time} onChange={(e) => updateResponse('time', e.target.value)}>
             <option value="">Select a time</option>
             <option value="Morning">Morning</option>
             <option value="Afternoon">Afternoon</option>
@@ -128,7 +129,7 @@ function App() {
         <main className="what">
           <h1>What do you feel like?</h1>
           <button className = 'back' onClick={() => setCurrentPage('when')}>&lt;&lt; Back</button>
-          <div className='preferences'>
+          {/* <div className='preferences'>
             <button onClick={()=>{
               updateResponse('preference', 'Food');
               updateResponse('specifics', []);
@@ -142,6 +143,34 @@ function App() {
             <button onClick={() => {
               updateResponse('preference', 'Food & Activity');
               updateResponse('specifics', []);
+              setCurrentPage('both');
+            }}>🍽️Both🕺</button>
+          </div> */}
+          <div className='preferences'>
+            <button onClick={() => {
+              // ONLY wipe if they are switching from something else to food
+              if (responses.preference !== 'food') {
+                updateResponse('specifics', []);
+              }
+              updateResponse('preference', 'food');
+              setCurrentPage('food-option');
+            }}>Food🍽️</button>
+
+            <button onClick={() => {
+              // ONLY wipe if they are switching from something else to activity
+              if (responses.preference !== 'activity') {
+                updateResponse('specifics', []);
+              }
+              updateResponse('preference', 'activity');
+              setCurrentPage('activity-option');
+            }}>Activity🕺</button>
+
+            <button onClick={() => {
+              // ONLY wipe if they are switching from something else to both
+              if (responses.preference !== 'both') {
+                updateResponse('specifics', []);
+              }
+              updateResponse('preference', 'both');
               setCurrentPage('both');
             }}>🍽️Both🕺</button>
           </div>
