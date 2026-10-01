@@ -72,9 +72,9 @@ button {
 
 button:hover:not(.NO) {
     transform: scale(1.02);
-    background-color: #ff4a73;
+    background-color: #ff7192;
     color: white;
-    border-color: #ff1a4a !important;
+    border-color: #ff3662 !important;
     box-shadow: 0 6px 20px rgba(255, 74, 115, 0.3);
 
 }
@@ -95,7 +95,7 @@ button:hover:not(.NO) {
 /* visual selections */
 .food-options button.selected,
 .activity-options button.selected{
-  background-color: #ff4a73; 
+  background-color: #f8446e; 
   color: white;             
   border: 2px solid #ff1a4a !important; 
   transform: scale(1.03);    /* pops the item out slightly larger on the screen */
