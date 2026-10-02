@@ -4,6 +4,7 @@ An interactive, foolproof date planner built with **React** and **Vite**. I saw 
 
 ## Live Demo
 [View Live Project Application](https://never-get-rejected.vercel.app/)
+
 **Note:** This works best on a laptop or desktop computer so you can watch the NO button slide away
 
 ## Features
