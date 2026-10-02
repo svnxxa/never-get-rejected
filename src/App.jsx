@@ -76,6 +76,30 @@ function App() {
   const FOOD_CHOICES = ['Sushi🍣', 'Pasta🍝', 'Tacos🌮', 'Ice Cream🍦', 'Tea/Coffee🍵', 'Drinks🍸']
   const ACTIVITY_CHOICES = ['Movie🎬', 'Arcade🎮', 'Sunset Watching🌇', 'Bouldering🧗', 'Hiking🚶', 'Bowling🎳']
 
+  
+  const generateTimeSlots = () => {
+    const times = [];
+    const periods = ['AM', 'PM'];
+
+    // start the loop at 9 and end at 23
+    for (let i = 9; i < 24; i++) {
+      // convert 24-hour clock to 12-hour format
+      let hour = i % 12;
+      if (hour === 0) hour = 12;
+      
+      const period = i < 12 ? 'AM' : 'PM';
+
+      // push both the sharp hour and half hour slots
+      times.push(`${hour}:00 ${period}`);
+      times.push(`${hour}:30 ${period}`);
+    }
+    return times;
+  };
+
+  // Create the list once so React doesn't have to keep rebuilding it
+  const TIME_SLOTS = generateTimeSlots();
+
+
   return (
     <div className="app-container">
 
@@ -104,12 +128,21 @@ function App() {
             onChange={(e) => updateResponse('date', e.target.value)}
           />
 
-          <select value={responses.time} onChange={(e) => updateResponse('time', e.target.value)}>
+          <select 
+            value={responses.time} 
+            onChange={(e) => updateResponse('time', e.target.value)}
+          >
             <option value="">Select a time</option>
-            <option value="Morning">Morning</option>
-            <option value="Afternoon">Afternoon</option>
-            <option value="Evening">Evening</option>
+            
+            {/* creates an option tag for every 30-minute interval*/}
+            {TIME_SLOTS.map(time => (
+              <option key={time} value={time}>
+                {time}
+              </option>
+            ))}
           </select>
+
+
 
           <p></p>
           
@@ -129,30 +162,13 @@ function App() {
         <main className="what">
           <h1>What do you feel like?</h1>
           <button className = 'back' onClick={() => setCurrentPage('when')}>&lt;&lt; Back</button>
-          {/* <div className='preferences'>
-            <button onClick={()=>{
-              updateResponse('preference', 'Food');
-              updateResponse('specifics', []);
-              setCurrentPage('food-option');
-            }}>Food🍽️</button>
-            <button onClick={()=> {
-              updateResponse('preference', 'Activity');
-              updateResponse('specifics', []);
-              setCurrentPage('activity-option');
-            }}>Activity🕺</button>
-            <button onClick={() => {
-              updateResponse('preference', 'Food & Activity');
-              updateResponse('specifics', []);
-              setCurrentPage('both');
-            }}>🍽️Both🕺</button>
-          </div> */}
           <div className='preferences'>
             <button onClick={() => {
               // ONLY wipe if they are switching from something else to food
               if (responses.preference !== 'food') {
                 updateResponse('specifics', []);
               }
-              updateResponse('preference', 'food');
+              updateResponse('preference', 'Food');
               setCurrentPage('food-option');
             }}>Food🍽️</button>
 
@@ -161,7 +177,7 @@ function App() {
               if (responses.preference !== 'activity') {
                 updateResponse('specifics', []);
               }
-              updateResponse('preference', 'activity');
+              updateResponse('preference', 'Activity');
               setCurrentPage('activity-option');
             }}>Activity🕺</button>
 
@@ -170,7 +186,7 @@ function App() {
               if (responses.preference !== 'both') {
                 updateResponse('specifics', []);
               }
-              updateResponse('preference', 'both');
+              updateResponse('preference', 'Both');
               setCurrentPage('both');
             }}>🍽️Both🕺</button>
           </div>
