@@ -142,8 +142,6 @@ function App() {
             ))}
           </select>
 
-
-
           <p></p>
           
           {/*validation check*/}
@@ -186,7 +184,7 @@ function App() {
               if (responses.preference !== 'both') {
                 updateResponse('specifics', []);
               }
-              updateResponse('preference', 'Both');
+              updateResponse('preference', 'Food & Activity');
               setCurrentPage('both');
             }}>🍽️Both🕺</button>
           </div>
@@ -373,22 +371,20 @@ function App() {
 
           <button className="back" onClick={() => {
             // back tracking for the summary screen
-            if (responses.preference === 'food') {
+            if (responses.preference === 'Food') {
               setCurrentPage('food-option');
-            } else {
-              setCurrentPage('activity-option');
+            } else if (responses.preference === 'Activity') {
+              setCurrentPage('activity-option'); 
+            } else if (responses.preference === 'Food & Activity') {
+              setCurrentPage('both')
             }
           }}>&lt;&lt; Change Plans</button>
+          
+          {/* <button className="back" onClick={() => setCurrentPage('what')}>
+            &lt;&lt; Change Plans
+          </button> */}
 
-          {/* <button className="confirm" onClick={() => {
-            // logs the choices to the console at submission
-            console.log("Final Submitted Responses:", responses); 
-            
-            // TODO: send an email OR store it somewhere
 
-            // thank you screen
-            setCurrentPage('thx');
-          }}>Looks Perfect! 🥰</button> */}
 
           <button className="confirm" onClick={async () => {
   if (responses.specifics.length === 0) {
